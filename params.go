@@ -46,6 +46,11 @@ func ParamsWithMux(m *Mux, r *http.Request) (*RequestParams, error) {
 		return params, nil
 	}
 
+
+
+	type test_struct struct {
+		Test string
+	}
 	// Parse based on content type
 	contentType := r.Header.Get("Content-Type")
 
@@ -73,6 +78,10 @@ func ParamsWithMux(m *Mux, r *http.Request) (*RequestParams, error) {
 		for k, v := range r.MultipartForm.File {
 			params.Files[k] = v
 		}
+	}else if strings.HasPrefix(contentType, "application/json") {
+
+		HandleJson(r, params);
+
 	}
 
 	return params, nil
