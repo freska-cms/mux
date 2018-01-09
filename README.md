@@ -23,7 +23,7 @@ It does not offer:
 Perform the usual incantation: 
 
 ```sh
-  go get -u github.com/fragmenta/mux
+  go get -u github.com/freska/mux
 ```
 
 ## Usage 
@@ -69,7 +69,7 @@ if err != nil {
 
 ```
 
-and display errors in a consistent way using your ErrorHandler function (you can also return a custom error type from handlers as fragmenta does to send more information than just error).
+and display errors in a consistent way using your ErrorHandler function (you can also return a custom error type from handlers as freska does to send more information than just error).
 
 
 ## Params
