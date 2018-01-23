@@ -23,7 +23,7 @@ It does not offer:
 Perform the usual incantation: 
 
 ```sh
-  go get -u github.com/freska/mux
+  go get -u github.com/freska-cms/mux
 ```
 
 ## Usage 
