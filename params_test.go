@@ -73,7 +73,7 @@ func TestParams(t *testing.T) {
 	form.Add("unit_id", "3")
 	form.Add("unit_id", "4")
 	body := strings.NewReader(form.Encode())
-	r = httptest.NewRequest("POST", "/users/create?test=asdf&1=é%30&debug=bar&float=4.0&float=2.0&date=2017-04-04", body)
+	r = httptest.NewRequest("POST", "/users/create?test=asdf&1=é%30&debug=bar&float=4.0&float=2.0&date=2018-04-04", body)
 	r.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 	params, err = Params(r)
 	if err != nil {
