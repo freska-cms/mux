@@ -1,6 +1,6 @@
-# Fragmenta Multiplexer (mux)
+# Freska Multiplexer (mux)
 
-Fragmenta mux is a replacement the standard http.ServeMux which offers a few additional features and improved efficiency. Features are very similar to gorilla/mux but with a few additions, and it is compatible with the standard http.Handler interface or handlers returning error.  
+Freska mux is a replacement the standard http.ServeMux which offers a few additional features and improved efficiency. Features are very similar to gorilla/mux but with a few additions, and it is compatible with the standard http.Handler interface or handlers returning error.
 
 It offers the following features:
 
@@ -107,12 +107,12 @@ Performance is adequate:
 
 BenchmarkStatic/stdlib_mux-4         	    1000	   1946545 ns/op	   20619 B/op	     537 allocs/op
 BenchmarkStatic/gorilla_mux-4        	    1000	   1846382 ns/op	  115648 B/op	    1578 allocs/op
-BenchmarkStatic/fragmenta_mux-4      	  100000	     13969 ns/op	       0 B/op	       0 allocs/op
+BenchmarkStatic/freska_mux-4      	  100000	     13969 ns/op	       0 B/op	       0 allocs/op
 BenchmarkStatic/httprouter_mux-4     	  100000	     16240 ns/op	       0 B/op	       0 allocs/op
 
 BenchmarkGithubFuzz/stdlib_mux-4               	     300	   4592686 ns/op	   35767 B/op	     902 allocs/op
 BenchmarkGithubFuzz/gorilla_mux-4              	     100	  12931693 ns/op	  246784 B/op	    2590 allocs/op
-BenchmarkGithubFuzz/fragmenta_mux-4            	    5000	    324911 ns/op	    7617 B/op	     136 allocs/op
+BenchmarkGithubFuzz/freska_mux-4            	    5000	    324911 ns/op	    7617 B/op	     136 allocs/op
 BenchmarkGithubFuzz/httprouter_mux-4           	   10000	    101702 ns/op	   23791 B/op	     296 allocs/op
 
 

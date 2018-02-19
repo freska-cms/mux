@@ -5,14 +5,15 @@ import (
 	"net/http"
 )
 
-func  HandleJson(r *http.Request, params *RequestParams){
+func  HandleJson(r *http.Request, params *RequestParams) error{
 	var data map[string]interface{}
 	decoder := json.NewDecoder(r.Body)
 	err := decoder.Decode(&data)
 
 	if err != nil {
-		panic(err)
+		return err
 	}
+
 	// Add the form values
 	for k, v := range data {
 		newval := v.(string)
@@ -20,4 +21,5 @@ func  HandleJson(r *http.Request, params *RequestParams){
 		value = append(value, newval)
 		params.Add(k, value)
 	}
+	return nil
 }

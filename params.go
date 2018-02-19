@@ -73,12 +73,12 @@ func ParamsWithMux(m *Mux, r *http.Request) (*RequestParams, error) {
 		for k, v := range r.MultipartForm.File {
 			params.Files[k] = v
 		}
-	}else if strings.HasPrefix(contentType, "application/json") {
-
-		HandleJson(r, params);
-
+	} else if strings.HasPrefix(contentType, "application/json") {
+		err := HandleJson(r, params)
+		if err != nil {
+			return nil, err
+		}
 	}
-
 	return params, nil
 }
 
