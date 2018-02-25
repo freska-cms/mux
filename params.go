@@ -73,8 +73,12 @@ func ParamsWithMux(m *Mux, r *http.Request) (*RequestParams, error) {
 		for k, v := range r.MultipartForm.File {
 			params.Files[k] = v
 		}
+	} else if strings.HasPrefix(contentType, "application/json") {
+		err := HandleJson(r, params)
+		if err != nil {
+			return nil, err
+		}
 	}
-
 	return params, nil
 }
 
@@ -221,6 +225,8 @@ func (p *RequestParams) GetIntsString(key string) string {
 func (p *RequestParams) GetFloat(key string) float64 {
 	var value float64
 	v := p.Get(key)
+	// Remove percent signs from float values
+	v = strings.Replace(v, "%", "", -1)
 	value, err := strconv.ParseFloat(v, 64)
 	if err != nil {
 		return 0.0
@@ -232,6 +238,8 @@ func (p *RequestParams) GetFloat(key string) float64 {
 func (p *RequestParams) GetFloats(key string) []float64 {
 	var values []float64
 	for _, v := range p.Values[key] {
+		// Remove percent signs from float values
+		v = strings.Replace(v, "%", "", -1)
 		value, err := strconv.ParseFloat(v, 64)
 		if err != nil {
 			value = 0.0
