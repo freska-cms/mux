@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-func  HandleJson(r *http.Request, params *RequestParams) error{
+func HandleJson(r *http.Request, params *RequestParams) error {
 	var data map[string]interface{}
 	decoder := json.NewDecoder(r.Body)
 	err := decoder.Decode(&data)
