@@ -9,6 +9,7 @@ import (
 	"strconv"
 	"strings"
 	"time"
+	"encoding/json"
 )
 
 // Params returns a new set of params parsed from the request.
@@ -21,6 +22,7 @@ func ParamsWithMux(m *Mux, r *http.Request) (*RequestParams, error) {
 	params := &RequestParams{
 		Values: make(url.Values, 0),
 		Files:  make(map[string][]*multipart.FileHeader, 0),
+		json:  make([]byte, 0),
 	}
 
 	// Find the route for request
@@ -46,6 +48,11 @@ func ParamsWithMux(m *Mux, r *http.Request) (*RequestParams, error) {
 		return params, nil
 	}
 
+
+
+	type test_struct struct {
+		Test string
+	}
 	// Parse based on content type
 	contentType := r.Header.Get("Content-Type")
 
@@ -73,12 +80,13 @@ func ParamsWithMux(m *Mux, r *http.Request) (*RequestParams, error) {
 		for k, v := range r.MultipartForm.File {
 			params.Files[k] = v
 		}
-	} else if strings.HasPrefix(contentType, "application/json") {
-		err := HandleJson(r, params)
-		if err != nil {
+	}else if strings.HasPrefix(contentType, "application/json") {
+		err := HandleJson(r, params);
+		if err != nil{
 			return nil, err
 		}
 	}
+
 	return params, nil
 }
 
@@ -90,18 +98,28 @@ func ParamsWithMux(m *Mux, r *http.Request) (*RequestParams, error) {
 type RequestParams struct {
 	Values url.Values
 	Files  map[string][]*multipart.FileHeader
+	json	[]byte
 }
 
 // Map returns a flattened map of params with only one entry for each key,
 // rather than the array of values Request params allow.
-func (p *RequestParams) Map() map[string]string {
-	flat := make(map[string]string)
+func (p *RequestParams) Map() map[string]interface{} {
+	flat := make(map[string]interface{})
 
 	for k, v := range p.Values {
 		flat[k] = v[0]
 	}
 
 	return flat
+}
+
+func (p *RequestParams) JsonMap() (map[string]interface{}, error){
+	var data map[string]interface{}
+	err := json.Unmarshal(p.json, &data)
+	if err != nil {
+		return nil, err
+	}
+	return data, nil
 }
 
 // Set sets this key to these values, removing any other entries.
@@ -225,8 +243,6 @@ func (p *RequestParams) GetIntsString(key string) string {
 func (p *RequestParams) GetFloat(key string) float64 {
 	var value float64
 	v := p.Get(key)
-	// Remove percent signs from float values
-	v = strings.Replace(v, "%", "", -1)
 	value, err := strconv.ParseFloat(v, 64)
 	if err != nil {
 		return 0.0
@@ -238,8 +254,6 @@ func (p *RequestParams) GetFloat(key string) float64 {
 func (p *RequestParams) GetFloats(key string) []float64 {
 	var values []float64
 	for _, v := range p.Values[key] {
-		// Remove percent signs from float values
-		v = strings.Replace(v, "%", "", -1)
 		value, err := strconv.ParseFloat(v, 64)
 		if err != nil {
 			value = 0.0
